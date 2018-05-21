@@ -5,7 +5,7 @@ import pandas as pd
 
 def load_data_set(file):
 
-	df = pd.read_csv("fake_or_real_news.csv")
+	df = pd.read_csv(file)
 	msk = np.random.rand(len(df)) < 0.8
 
 	return df[msk], df[~msk]

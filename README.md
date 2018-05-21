@@ -26,9 +26,21 @@ Python packages needed inside `requirements.txt`
     $ pip install -r requirements.txt
 
 ```
-3. Run `Evaluate.py` to evaluate different word embeding mechanism
+3. Run `Evaluate.py` to evaluate different word embeding preprocessor
 ```bash
     
     $ python Evaluate.py
+
+```
+4. Run `Train.py` to train the model the save it on `./tmp/` folder
+```bash
+    
+    $ python Train.py
+
+```
+5. Run `Test.py` to test your data on the newly trained model
+```bash
+    
+    $ python Test.py
 
 ```
