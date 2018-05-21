@@ -1,4 +1,4 @@
-#Deep Neural Network with Tensorflow Hub - Fake News Classification
+# Deep Neural Network with Tensorflow Hub - Fake News Classification
 This project classifies fake news using new Tensorflow word embeding from pre trained tensorflow hub
 
 About
