@@ -1,0 +1,5 @@
+pandas
+seaborn
+tensorflow>=1.7.0
+tensorflow_hub>=0.1.0
+matplotlib
