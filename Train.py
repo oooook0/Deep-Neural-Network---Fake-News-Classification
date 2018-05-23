@@ -50,7 +50,8 @@ def main(argv=None):
 
 	embedded_text_feature_column = hub.text_embedding_column(
 	    key="text", 
-	    module_spec=FLAGS.tensor_hub_model)
+	    module_spec=FLAGS.tensor_hub_model,
+	    trainable=True)
 
 	# Transform Data to TF data type
 
@@ -68,7 +69,7 @@ def main(argv=None):
 	    hidden_units=[500, 100],
 	    feature_columns=[embedded_text_feature_column],
 	    n_classes=2,
-	    optimizer=tf.train.AdagradOptimizer(learning_rate=0.003),
+	    optimizer=tf.train.ProximalAdagradOptimizer(learning_rate=0.003, l2_regularization_strength=0.01),
 	    model_dir=BASE_EXPORT_DIR)
 
 	# Train model
