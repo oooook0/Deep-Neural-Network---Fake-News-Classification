@@ -6,6 +6,17 @@ import pandas as pd
 import seaborn as sns
 import os
 
+FLAGS = tf.app.flags.FLAGS
+
+tf.app.flags.DEFINE_string('tensor_hub_model', 'https://tfhub.dev/google/nnlm-en-dim128/1',
+					"""	define the word embeding model to use
+					""")
+
+tf.app.flags.DEFINE_integer('max_steps', 1000,
+                            """Number of batches to run.""")
+
+
+
 def load_data_set(file):
 	df = pd.read_csv(file)
 	msk = np.random.rand(len(df)) < 0.8
@@ -20,10 +31,7 @@ def get_predictions(estimator, input_fn):
 
   	return [x["class_ids"][0] for x in estimator.predict(input_fn=input_fn)]
 
-if __name__ == "__main__":
-
-	tf.logging.set_verbosity(tf.logging.INFO)
-
+def main(argv=None):
 	################################# Data Loading #######################################
 	train, test = load_data_set("./data/fake_or_real_news.csv")
 
@@ -42,7 +50,7 @@ if __name__ == "__main__":
 
 	embedded_text_feature_column = hub.text_embedding_column(
 	    key="text", 
-	    module_spec="https://tfhub.dev/google/nnlm-en-dim128/1")
+	    module_spec=FLAGS.tensor_hub_model)
 
 	# Transform Data to TF data type
 
@@ -65,7 +73,7 @@ if __name__ == "__main__":
 
 	# Train model
 
-	estimator.train(input_fn=train_input_fn, steps=1000)
+	estimator.train(input_fn=train_input_fn, steps=FLAGS.max_steps)
 
 	# Evalute model and get accuracy
 
@@ -98,4 +106,9 @@ if __name__ == "__main__":
 	sns.heatmap(cm_out, annot=True, xticklabels=LABELS, yticklabels=LABELS)
 	plt.xlabel("Predicted")
 	plt.ylabel("True")
-	plt.show()
+	plt.show()	
+if __name__ == "__main__":
+
+	tf.logging.set_verbosity(tf.logging.INFO)
+	tf.app.run()
+
