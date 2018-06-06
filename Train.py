@@ -1,3 +1,5 @@
+__author__ = 'Yitao Sun'
+
 import tensorflow as tf
 import tensorflow_hub as hub
 import matplotlib.pyplot as plt
@@ -31,6 +33,18 @@ def get_predictions(estimator, input_fn):
 
   	return [x["class_ids"][0] for x in estimator.predict(input_fn=input_fn)]
 
+def serving_fn():
+    receiver_tensor = {
+        "text": tf.placeholder(dtype=tf.string, shape=None)
+    }
+
+    features = {
+        key: tensor
+        for key, tensor in receiver_tensor.items()
+    }
+
+    return tf.estimator.export.ServingInputReceiver(features, receiver_tensor)
+
 def main(argv=None):
 	################################# Data Loading #######################################
 	train, test = load_data_set("./data/fake_or_real_news.csv")
@@ -46,7 +60,7 @@ def main(argv=None):
 	
 	################################## Modeling ##########################################
 
-	BASE_EXPORT_DIR = os.getcwd() + '/tmp/'
+	BASE_EXPORT_DIR = os.getcwd() + '/model/'
 
 	embedded_text_feature_column = hub.text_embedding_column(
 	    key="text", 
@@ -70,7 +84,8 @@ def main(argv=None):
 	    feature_columns=[embedded_text_feature_column],
 	    n_classes=2,
 	    optimizer=tf.train.ProximalAdagradOptimizer(learning_rate=0.003, l2_regularization_strength=0.01),
-	    model_dir=BASE_EXPORT_DIR)
+	    #model_dir=BASE_EXPORT_DIR
+	    )
 
 	# Train model
 
@@ -85,6 +100,8 @@ def main(argv=None):
 	print("Test set accuracy: {accuracy}".format(**test_eval_result))
 
 	print(estimator.evaluate(input_fn=predict_test_input_fn)["accuracy_baseline"])
+
+	estimator.export_savedmodel(export_dir_base=BASE_EXPORT_DIR, serving_input_receiver_fn=serving_fn)
 	
 	################################confusion matrix######################################
 
@@ -107,9 +124,9 @@ def main(argv=None):
 	sns.heatmap(cm_out, annot=True, xticklabels=LABELS, yticklabels=LABELS)
 	plt.xlabel("Predicted")
 	plt.ylabel("True")
-	plt.show()	
+	plt.show()
+
 if __name__ == "__main__":
 
 	tf.logging.set_verbosity(tf.logging.INFO)
 	tf.app.run()
-

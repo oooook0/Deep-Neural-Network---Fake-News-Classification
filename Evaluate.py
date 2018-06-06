@@ -1,3 +1,5 @@
+__author__ = 'Yitao Sun'
+
 import tensorflow as tf
 import tensorflow_hub as hub
 import pandas as pd

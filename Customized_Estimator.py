@@ -1,3 +1,5 @@
+__author__ = 'Yitao Sun'
+
 import tensorflow as tf
 import tensorflow_hub as hub
 import numpy as np
@@ -105,4 +107,3 @@ if __name__ == "__main__":
 
 	print("Training set accuracy: {accuracy}".format(**train_eval_result))
 	print("Test set accuracy: {accuracy}".format(**test_eval_result))
-
