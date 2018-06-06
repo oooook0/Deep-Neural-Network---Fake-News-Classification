@@ -15,7 +15,7 @@ Token based text embedding trained on English Google News 200B corpus.
 Text embedding based on feed-forward Neural-Net Language Models[1] with pre-built OOV. Maps from text to 128-dimensional embedding vectors.
 
 ## Neural Network Architecture
-The model is built using [DNN Classifier](https://www.tensorflow.org/api_docs/python/tf/estimator/DNNClassifier). 
+The model is built using [DNN Classifier](https://www.tensorflow.org/api_docs/python/tf/estimator/DNNClassifier) with 2 fully connected layers. 
 
 ## Results
 The Fake News classifier was created to determine if a patient has retinopathy. The current model returns the following scores.
@@ -49,19 +49,27 @@ Python packages needed inside `requirements.txt`
     $ pip install -r requirements.txt
 
 ```
-3. Run `Evaluate.py` to evaluate different word embeding preprocessor
+3. Save `Tensorflow Hub` model to your current dir
+```bash
+
+    $ export TFHUB_CACHE_DIR=./my_module_cache
+
+```
+4. Run `Evaluate.py` to evaluate different word embeding preprocessor
 ```bash
     
     $ python Evaluate.py
 
 ```
-4. Run `Train.py` to train the model the save it on `./tmp/` folder
+5. Run `Train.py` to train the model the save it on `./model/` folder
 ```bash
     
-    $ python Train.py
+    $ python Train.py --tensor_hub_model=[Tensorflow Hub Model to run] /
+                      --max_steps=[Number of batches to run.] /
+                      --base_export_dir=[Directory to save the model.]
 
 ```
-5. Run `Test.py` to test your data on the newly trained model
+6. Run `Test.py` to test your data on the newly trained model
 ```bash
     
     $ python Test.py --file_dir=[your json article input]

@@ -17,6 +17,8 @@ tf.app.flags.DEFINE_string('tensor_hub_model', 'https://tfhub.dev/google/nnlm-en
 tf.app.flags.DEFINE_integer('max_steps', 1000,
                             """Number of batches to run.""")
 
+tf.app.flags.DEFINE_string('base_export_dir', os.getcwd() + '/model/',
+                            """Directory to save the model.""")
 
 
 def load_data_set(file):
@@ -60,7 +62,7 @@ def main(argv=None):
 	
 	################################## Modeling ##########################################
 
-	BASE_EXPORT_DIR = os.getcwd() + '/model/'
+	# BASE_EXPORT_DIR = os.getcwd() + '/model/'
 
 	embedded_text_feature_column = hub.text_embedding_column(
 	    key="text", 
@@ -84,7 +86,7 @@ def main(argv=None):
 	    feature_columns=[embedded_text_feature_column],
 	    n_classes=2,
 	    optimizer=tf.train.ProximalAdagradOptimizer(learning_rate=0.003, l2_regularization_strength=0.01),
-	    #model_dir=BASE_EXPORT_DIR
+	    #model_dir=FLAGS.base_export_dir
 	    )
 
 	# Train model
@@ -101,7 +103,7 @@ def main(argv=None):
 
 	print(estimator.evaluate(input_fn=predict_test_input_fn)["accuracy_baseline"])
 
-	estimator.export_savedmodel(export_dir_base=BASE_EXPORT_DIR, serving_input_receiver_fn=serving_fn)
+	estimator.export_savedmodel(export_dir_base=FLAGS.base_export_dir, serving_input_receiver_fn=serving_fn)
 	
 	################################confusion matrix######################################
 
