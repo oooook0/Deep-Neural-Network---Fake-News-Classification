@@ -62,8 +62,6 @@ def main(argv=None):
 	
 	################################## Modeling ##########################################
 
-	# BASE_EXPORT_DIR = os.getcwd() + '/model/'
-
 	embedded_text_feature_column = hub.text_embedding_column(
 	    key="text", 
 	    module_spec=FLAGS.tensor_hub_model,

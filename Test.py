@@ -1,8 +1,8 @@
 __author__ = 'Yitao Sun'
 
 import tensorflow as tf
-
 from tensorflow.contrib import predictor
+
 
 tf.logging.set_verbosity(tf.logging.INFO)
 

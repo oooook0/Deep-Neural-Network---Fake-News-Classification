@@ -1,4 +1,4 @@
-# Deep Neural Network with Tensorflow Hub - Fake News Classification
+# DNN with Tensorflow Hub - Fake News Classification
 
 ![Fake News Image](https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/therealconse.jpg)
 
