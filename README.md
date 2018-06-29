@@ -1,7 +1,5 @@
 # DNN with Tensorflow Hub - Fake News Classification
 
-![Fake News Image](https://3c1703fe8d.site.internapcdn.net/newman/gfx/news/hires/2017/therealconse.jpg)
-
 About
 =====
 This project classifies fake news using new Tensorflow word embeding from pre trained [Tensorflow Hub](https://www.tensorflow.org/hub/) models
