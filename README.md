@@ -76,6 +76,41 @@ Python packages needed inside `requirements.txt`
 
 ```
 
+## Tensorlow Serving 
+
+1. Note that tensorflow serving only works for model that is in the model version folder. Remember to place your model inside the folder that use model version as dir name
+[Official documentation](https://www.tensorflow.org/serving/docker)
+
+2. Download the docker image of `Tensorflow Serving` 
+```bash
+    
+    $ docker pull tensorflow/serving
+
+```
+3. Run the docker `Tensorflow Serving` on port 8501(or other port you wanna open)
+Note: /path/to/my_model/:the dir to the model dir(with the model version in it)
+      /models/your_own_model_name: specify the model name you want
+```bash
+    
+    $ docker run -p 8501:8501 \
+        --mount type=bind,source=[/path/to/your_model/],target=[/models/your_own_model_name] \
+        -e MODEL_NAME=[your_own_model_name] -t tensorflow/serving
+
+```
+4. Example using the Tensorflow serving API(RESTful Standard)
+```python
+import pprint
+import requests as req 
+
+
+data = '{"instances":["President Trump called the Iran nuclear deal a horrible agreement for the United States in response to Israeli Prime Minister Benjamin Netanyahus bombshell allegations about Tehrans covert activity – but stopped short of saying whether hed abandon the deal ahead of a looming deadline.  The president addressed the claims during a Rose Garden press conference Monday afternoon, moments after Netanyahu held a dramatic presentation revealing intelligence he says shows Iran is lying about its nuclear weapons program. That is just not an acceptable situation, Trump said. Trump said Netanyahu’s claims show Iran is not sitting back idly. Israeli prime minister claims Iran had been hiding all of the elements of a secret nuclear weapons program.Video Netanyahu on nuclear deal: Iran lied, big time Theyre setting off missiles which they say are for television purposes, Trump said. He added: I dont think so. Trump has repeatedly expressed a desire to exit the Iran deal, which was signed during the Obama administration. A crucial deadline for re-certifying the deal is on the horizon"]}'
+
+response = req.post("http://localhost:8501/v1/models/my_model:predict", data = data.encode('utf-8'))
+
+print(response.json())
+
+```
+
 
 
 
