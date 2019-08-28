@@ -22,20 +22,37 @@ tf.app.flags.DEFINE_string('base_export_dir', os.getcwd() + '/model/',
 
 
 def load_data_set(file):
+
+    """
+    load the csv dataset into dataframe and break into train and test set (80% split)
+    """
 	df = pd.read_csv(file)
 	msk = np.random.rand(len(df)) < 0.8
 	return df[msk], df[~msk]
 
 def one_hot(dataset, match):
+
+    """
+    conducted one hot encoding for dependent variable(y)
+    """
+
 	dataset['y'] = 0
 	dataset.loc[dataset[match] == 'FAKE', 'y'] = 1
 	return dataset
 
 def get_predictions(estimator, input_fn):
 
+	"""
+	using the model to output predictions 
+	"""
+
   	return [x["class_ids"][0] for x in estimator.predict(input_fn=input_fn)]
 
 def serving_fn():
+
+	"""
+	tensorflow feature loading 
+	"""
     receiver_tensor = {
         "text": tf.placeholder(dtype=tf.string, shape=None)
     }

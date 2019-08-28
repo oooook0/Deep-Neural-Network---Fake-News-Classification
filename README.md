@@ -40,7 +40,7 @@ Python packages needed inside `requirements.txt`
 ```bash
     
     $ cd [path/to/dir]/data
-    $ cd unzip fake_or_real_news.csv.zip
+    $ unzip fake_or_real_news.csv.zip
 
 ```
 2. Install `requirements.txt` 
